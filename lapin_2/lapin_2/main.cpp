@@ -3,6 +3,7 @@
 #include "Initialize_conponent.h"
 #include "Scene_Start.h"
 #include "Scene_Build.h"
+#include "Scene_forest.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -23,7 +24,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	delete Build;
 
 	//ステージ実行シーン
-
+	Scene_forest *forest = new Scene_forest;
+	forest->Forest_start();
+	delete forest;
 
 	//終了処理
 	DxLib_End();

@@ -5,6 +5,7 @@ class Scene
 public:
 	IO Standard_initialize_IO;
 
+	int World_value = 0;
 	int World[100][2];
 	int User_brock_pos[3][2];
 

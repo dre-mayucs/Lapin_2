@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+#define BLOCK_X 0
+#define BLOCK_Y 1
 #define BLOCK_SIZE 64		//ブロックサイズ
 #define DEFOLIATION_NUM 7	//落ち葉ブロック分割数
 #define JUMP_NUM 5			//ジャンプブロック分割数
@@ -14,6 +16,13 @@ public:
 
 private:
 	void BG_scroll();
+	int collision_block_otherblock(int *mouse_x, int *mouse_y, const int(*pos_tmp)[3], int num);
+	bool collision_defoliation_normal();
+	bool collision_normal_jump();
+	bool collision_jump_defoliation();
+	bool collision_defoliation_mouse();
+	bool collision_normal_mouse();
+	bool collision_jump_mouse();
 
 private:
 	int World_count = 0;
