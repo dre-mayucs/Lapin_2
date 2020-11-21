@@ -15,9 +15,10 @@ void Initialize_conponent::Initialize()
 {
 	// ウィンドウモード
 	ChangeWindowMode(true);
-	SetWindowSizeChangeEnableFlag(false, false);
+	SetWindowSizeChangeEnableFlag(true, false);
 	SetMainWindowText(TITLE);
-	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
+	SetGraphMode(WIN_WIDTH * 2, WIN_HEIGHT, 32);
+	SetWindowSize(800, 450);
 	SetWindowSizeExtendRate(1.0);
 	SetBackgroundColor(0, 0, 0);
 }

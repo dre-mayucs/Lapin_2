@@ -19,11 +19,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	delete start;
 
 	//ステージ制作シーン
+	SetWindowSize(1600, 450);
 	Scene_Build *Build = new Scene_Build;
 	Build->Build_Window();
 	delete Build;
 
 	//ステージ実行シーン
+	SetWindowSize(800, 450);
 	Scene_forest *forest = new Scene_forest;
 	forest->Forest_start();
 	delete forest;

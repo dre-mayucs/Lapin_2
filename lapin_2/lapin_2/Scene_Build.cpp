@@ -46,7 +46,7 @@ void Scene_Build::Build_Window()
 		//画面クリア
 		ClearDrawScreen();
 
-		BG_scroll();
+		/*BG_scroll();*/
 
 		//背景描画
 		DrawGraph(BG_X[0], 0, BG, TRUE);//z
@@ -59,9 +59,10 @@ void Scene_Build::Build_Window()
 
 		//インターフェース描画
 		DrawGraph(0, 0, UI_image, true);
-		DrawGraph(Win_config.WIN_WIDTH - arrowWidth, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//前進
-		DrawTurnGraph(192, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//後退
+		//DrawGraph(Win_config.WIN_WIDTH - arrowWidth, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//前進
+		//DrawTurnGraph(192, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//後退
 
+		//再生処理
 		for (auto i = 0; i < 2; i++) {
 			//当たり判定
 			bool collision_start = collision.Trigonometric_Fanc(UI_Button_pos[i][0], UI_Button_pos[i][1], 32, MousePos[0], MousePos[1], 32);
@@ -73,6 +74,18 @@ void Scene_Build::Build_Window()
 				if (MouseDown != true && oldMouseDown == true) {
 					Startbutton_flag = true;
 				}
+			}
+		}
+
+		if (MouseDown == true) {
+			if (collision_defoliation_mouse() == true) {
+				collision_block_otherblock(&MousePos[0], &MousePos[1], blocks_tmp, 0);
+			}
+			else if (collision_normal_mouse() == true) {
+				collision_block_otherblock(&MousePos[0], &MousePos[1], blocks_tmp, 1);
+			}
+			else if (collision_jump_mouse() == true) {
+				collision_block_otherblock(&MousePos[0], &MousePos[1], blocks_tmp, 2);
 			}
 		}
 
@@ -112,39 +125,39 @@ void Scene_Build::Build_Window()
 }
 
 //背景スクロール
-void Scene_Build::BG_scroll()//z
-{
-	Window_config Win_config;
-	bool MosueLeftInput = MouseDown && !oldMouseDown;
-	bool scrollLeftFlag = MousePos[0] > 192 && MousePos[0] < 192 + 32 && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
-	bool scrollRightFlag = MousePos[0] > Win_config.WIN_WIDTH - 32 && MousePos[0] < Win_config.WIN_WIDTH && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
-
-	int scrollVel = 100;
-
-	if (scrollRightFlag && MosueLeftInput)
-	{
-		BG_X[0] -= scrollVel;
-		BG_X[1] -= scrollVel;
-		World_x_adjust -= scrollVel;
-	}
-	if (scrollLeftFlag && MosueLeftInput)
-	{
-		BG_X[0] += scrollVel;
-		BG_X[1] += scrollVel;
-		World_x_adjust += scrollVel;
-	}
-	for (int i = 0; i < 2; ++i)
-	{
-		if (BG_X[i] < -Win_config.WIN_WIDTH)
-		{
-			BG_X[i] = Win_config.WIN_WIDTH - scrollVel;
-		}
-		if (BG_X[i] > Win_config.WIN_WIDTH)
-		{
-			BG_X[i] = -Win_config.WIN_WIDTH + scrollVel;
-		}
-	}
-}
+//void Scene_Build::BG_scroll()//z
+//{
+//	Window_config Win_config;
+//	bool MosueLeftInput = MouseDown && !oldMouseDown;
+//	bool scrollLeftFlag = MousePos[0] > 192 && MousePos[0] < 192 + 32 && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
+//	bool scrollRightFlag = MousePos[0] > Win_config.WIN_WIDTH - 32 && MousePos[0] < Win_config.WIN_WIDTH && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
+//
+//	int scrollVel = 100;
+//
+//	if (scrollRightFlag && MosueLeftInput)
+//	{
+//		BG_X[0] -= scrollVel;
+//		BG_X[1] -= scrollVel;
+//		World_x_adjust -= scrollVel;
+//	}
+//	if (scrollLeftFlag && MosueLeftInput)
+//	{
+//		BG_X[0] += scrollVel;
+//		BG_X[1] += scrollVel;
+//		World_x_adjust += scrollVel;
+//	}
+//	for (int i = 0; i < 2; ++i)
+//	{
+//		if (BG_X[i] < -Win_config.WIN_WIDTH)
+//		{
+//			BG_X[i] = Win_config.WIN_WIDTH - scrollVel;
+//		}
+//		if (BG_X[i] > Win_config.WIN_WIDTH)
+//		{
+//			BG_X[i] = -Win_config.WIN_WIDTH + scrollVel;
+//		}
+//	}
+//}
 
 //落ち葉ブロックと通常ブロックの衝突判定
 bool Scene_Build::collision_defoliation_normal() {
