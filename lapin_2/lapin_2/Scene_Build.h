@@ -13,9 +13,10 @@ public:
 	void Build_Window();
 
 private:
-	void BG_scroll(int *BgX, int *adjust, const int &mouseX, const int &mouseY);
+	void BG_scroll();
 
 private:
+	int World_count = 0;
 	int World_x_adjust = 0;
 
 	//Background image

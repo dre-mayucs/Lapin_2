@@ -5,14 +5,13 @@
 
 World_inport::World_inport()
 {
-	World_value = 0;
 	return;
 }
 
-void World_inport::Inport(int World[][2], std::string Stage_name)
+void World_inport::Inport(int World[][2], std::string Stage_name, int *value)
 {
-	std::string File = "Resources\\scenes\\" + Stage_name;
-
+	std::string File = "Resources\\scenes\\stage.scene";
+	
 	int count = 0;
 	int count2 = 0;
 
@@ -27,7 +26,7 @@ void World_inport::Inport(int World[][2], std::string Stage_name)
 		std::istringstream stream = std::istringstream(cache_str);
 		stream >> cache_2[count++];
 	}
-	this->World_value = count;
+	*value = count;
 
 	for (auto i = 0; i < count; i++) {
 		for (auto cache_str : S_Split(cache_2[i], ',')) {

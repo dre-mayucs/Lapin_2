@@ -1,15 +1,16 @@
 #include "DxLib.h"
 
 #include "Scene_Build.h"
-#include "World_inport.h"
 #include "IO.h"
 #include "Win_config.h"
+#include "Collision.h"
+#include "World_inport.h"
 
 Scene_Build::Scene_Build()
 {
 	//ワールド読み込み
 	World_inport inport;
-	inport.Inport(World, "scene.scene");
+	inport.Inport(World, "scene.scene", &World_count);
 
 	//素材定義
 	BG = LoadGraph("Resources\\Background\\background.png");
@@ -32,6 +33,7 @@ Scene_Build::Scene_Build()
 
 void Scene_Build::Build_Window()
 {
+	World_inport inport;
 	Window_config Win_config;
 	while (true)
 	{
@@ -43,14 +45,14 @@ void Scene_Build::Build_Window()
 		//画面クリア
 		ClearDrawScreen();
 
-		BG_scroll(BG_X, &World_x_adjust, MousePos[0], MousePos[1]);//z
+		BG_scroll();
 
 		//背景描画
 		DrawGraph(BG_X[0], 0, BG, TRUE);//z
 		DrawGraph(BG_X[1], 0, BG, TRUE);//z
 
 		//既存ワールドデータ描画
-		for (auto i = 0; i < World_x_adjust; i++) {
+		for (auto i = 0; i < World_count; i++) {
 			DrawGraph(World[i][0] + World_x_adjust, World[i][1], nomal_block[0], true); //通常ブロック
 		}
 
@@ -67,37 +69,36 @@ void Scene_Build::Build_Window()
 	}
 }
 
-void Scene_Build::BG_scroll(int *BgX, int *adjust, const int &mouseX, const int &mouseY)//z
+void Scene_Build::BG_scroll()//z
 {
 	Window_config Win_config;
-
-	bool keyLeftInput = MouseDown == MOUSE_INPUT_LEFT && oldMouseDown != MOUSE_INPUT_LEFT;
-	bool scrollLeftFlag = mouseX > 192 && mouseX < 192 + 32 && mouseY > 2 - 32 && mouseY < Win_config.WIN_HEIGHT / 2 + 32;
-	bool scrollRightFlag = mouseX > Win_config.WIN_WIDTH - 32 && mouseX < Win_config.WIN_WIDTH &&mouseY > Win_config.WIN_HEIGHT / 2 - 32 && mouseY < Win_config.WIN_HEIGHT / 2 + 32;
+	bool MosueLeftInput = MouseDown && !oldMouseDown;
+	bool scrollLeftFlag = MousePos[0] > 192 && MousePos[0] < 192 + 32 && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
+	bool scrollRightFlag = MousePos[0] > Win_config.WIN_WIDTH - 32 && MousePos[0] < Win_config.WIN_WIDTH && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
 
 	int scrollVel = 100;
 
-	if (scrollRightFlag && keyLeftInput)
+	if (scrollRightFlag && MosueLeftInput)
 	{
-		BgX[0] -= scrollVel;
-		BgX[1] -= scrollVel;
-		*adjust -= scrollVel;
+		BG_X[0] -= scrollVel;
+		BG_X[1] -= scrollVel;
+		World_x_adjust -= scrollVel;
 	}
-	if (scrollLeftFlag && keyLeftInput)
+	if (scrollLeftFlag && MosueLeftInput)
 	{
-		BgX[0] += scrollVel;
-		BgX[1] += scrollVel;
-		*adjust += scrollVel;
+		BG_X[0] += scrollVel;
+		BG_X[1] += scrollVel;
+		World_x_adjust += scrollVel;
 	}
 	for (int i = 0; i < 2; ++i)
 	{
-		if (BgX[i] < -Win_config.WIN_WIDTH)
+		if (BG_X[i] < -Win_config.WIN_WIDTH)
 		{
-			BgX[i] = Win_config.WIN_WIDTH - scrollVel;
+			BG_X[i] = Win_config.WIN_WIDTH - scrollVel;
 		}
-		if (BgX[i] > Win_config.WIN_WIDTH)
+		if (BG_X[i] > Win_config.WIN_WIDTH)
 		{
-			BgX[i] = -Win_config.WIN_WIDTH + scrollVel;
+			BG_X[i] = -Win_config.WIN_WIDTH + scrollVel;
 		}
 	}
 }

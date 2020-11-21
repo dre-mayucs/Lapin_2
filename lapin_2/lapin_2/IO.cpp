@@ -14,7 +14,7 @@ void IO::Mouse_Initialize(bool *Mouse_Down, bool *oldMouse_Down, int *MousePos)
 	*oldMouse_Down = *Mouse_Down;
 
 	//É}ÉEÉXèÓïÒÇï€ë∂
-	MOUSE_INPUT_LEFT ? *Mouse_Down = true : *Mouse_Down = false;
+	GetMouseInput() & MOUSE_INPUT_LEFT ? *Mouse_Down = true : *Mouse_Down = false;
 	GetMousePoint(&MousePos[X], &MousePos[Y]);
 }
 
