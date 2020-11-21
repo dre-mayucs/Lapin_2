@@ -7,6 +7,8 @@
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
+	int user_brocks_pos[3][2];
+
 	//初期化
 	Initialize_conponent Init;
 	Init.Initialize();
@@ -22,11 +24,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetWindowSize(1600, 450);
 	Scene_Build *Build = new Scene_Build;
 	Build->Build_Window();
+	Build->output_brokpos(user_brocks_pos);
 	delete Build;
 
 	//ステージ実行シーン
 	SetWindowSize(800, 450);
-	Scene_forest *forest = new Scene_forest;
+	Scene_forest *forest = new Scene_forest(user_brocks_pos);
 	forest->Forest_start();
 	delete forest;
 

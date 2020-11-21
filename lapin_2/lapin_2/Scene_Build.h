@@ -13,9 +13,9 @@ class Scene_Build : public Scene
 public:
 	Scene_Build();
 	void Build_Window();
+	void output_brokpos(int brocks[3][2]);
 
 private:
-	void BG_scroll();
 	int collision_block_otherblock(int *mouse_x, int *mouse_y, const int(*pos_tmp)[3], int num);
 	bool collision_defoliation_normal();
 	bool collision_normal_jump();
@@ -55,7 +55,6 @@ private:
 		{10, 135},
 		{10, 60}
 	};
-
 
 	//cache
 	int blocks_tmp[3][3];

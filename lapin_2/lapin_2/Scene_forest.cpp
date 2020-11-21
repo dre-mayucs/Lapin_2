@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "Scene_forest.h"
 
-Scene_forest::Scene_forest()
+Scene_forest::Scene_forest(int brocks[3][2])
 {
 	//キャラクター
 	Background = LoadGraph("Resources\\Background\\background.png");
@@ -16,6 +16,11 @@ Scene_forest::Scene_forest()
 	for (auto i = 0; i < 3; i++) {
 		animation_frame[i][0] = 0;
 		animation_frame[i][1] = 0;
+	}
+
+	for (auto i = 0; i < 3; i++) {
+		User_brock_pos[i][0] = brocks[i][0];
+		User_brock_pos[i][1] = brocks[i][1];
 	}
 }
 
@@ -79,8 +84,6 @@ void Scene_forest::DrawBrocks()
 		DrawGraph(World[i][0] + Worldadjust, World[i][1], nomal_block[0], true); //通常ブロック
 	}
 
-	DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", World_value);
-
 	//ユーザー定義ブロック描画
 	DrawGraph(User_brock_pos[0][0], User_brock_pos[0][1], defoliation_brock[0], true); //落下ブロック
 	DrawGraph(User_brock_pos[1][0], User_brock_pos[1][1], nomal_block[0], true); //通常ブロック
@@ -109,7 +112,23 @@ void Scene_forest::Animation()
 			animation_frame[1][0] = 0;
 			animation_flag[1] = false;
 
-			character_pos_y += 64;
+			while (character_pos_y <= 325) {
+				character_pos_y++;
+			}
+		}
+		if (animation_frame[1][1] == 3) {
+			animation_frame[1][0]++;
+			animation_frame[1][1] = 0;
+		}
+		animation_frame[0][1]++;
+	}
+	else if (animation_flag[2]) {
+		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[1][0]], true);
+		if (animation_frame[1][0] == 8) {
+			animation_frame[1][0] = 0;
+			animation_flag[2] = false;
+
+			character_pos_y += 128;
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
@@ -118,9 +137,6 @@ void Scene_forest::Animation()
 		animation_frame[0][1]++;
 	}
 	else {
-		/*animation_flag[0] = false;
-		animation_flag[1] = false;*/
-
 		DrawGraph(character_pos_x, character_pos_y, character[animation_frame[2][0]], true);
 		if (animation_frame[2][0] == 6) {
 			animation_frame[2][0] = 0;
@@ -133,24 +149,54 @@ void Scene_forest::Animation()
 	}
 }
 
+bool jump_flag = false;
 void Scene_forest::Character_motion()
 {
 	bool center_collision;
-	bool oversize_box_collision;
-	bool gravity_flag;
+	bool under_collision;
 	for (auto i = 0; i < World_value; i++) {
 		center_collision = collision.Trigonometric_Fanc(
 			(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-			(double)World[i][0] + Worldadjust, World[i][1], 32
+			(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32
 		);
-		oversize_box_collision = collision.Trigonometric_Fanc(
-			(double)character_pos_x + 64, (double)character_pos_y + 64, 4,
-			(double)World[i][0] + 64, World[i][1], 4
-		);
-
 		if (center_collision && animation_flag[0] != true) {
 			animation_flag[0] = true;
-			/*break;*/
+			break;
 		}
+
+		under_collision = collision.Trigonometric_Fanc(
+			(double)character_pos_x + 32, (double)character_pos_y + 70, 4,
+			(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32
+		);
+		if (under_collision == false && character_pos_y <= 325 - 64) {
+			character_pos_y++;
+		}
+
+		DrawCircle((double)character_pos_x + 32, (double)character_pos_y + 96, 4, GetColor(0, 0, 0), true);
+		DrawCircle((double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32, GetColor(0, 0, 0), true);
+	}
+
+	center_collision = collision.Trigonometric_Fanc(
+		(double)character_pos_x + 64, (double)character_pos_y + 60, 4,
+		(double)User_brock_pos[0][0] + 32, (double)User_brock_pos[0][1] + 32, 32
+	);
+	if (center_collision) {
+		animation_flag[1] = true;
+	}
+
+	center_collision = collision.Trigonometric_Fanc(
+		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
+		(double)User_brock_pos[1][0] + 32, (double)User_brock_pos[1][1] + 32, 32
+	);
+	if (center_collision) {
+		animation_flag[0] = true;
+	}
+
+	center_collision = collision.Trigonometric_Fanc(
+		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
+		(double)User_brock_pos[2][0] + 32, (double)User_brock_pos[2][1] + 32, 32
+	);
+	if (center_collision) {
+		animation_flag[2] = true;
 	}
 }

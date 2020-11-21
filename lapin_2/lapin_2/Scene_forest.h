@@ -7,7 +7,7 @@
 class Scene_forest : public Scene
 {
 public:
-	Scene_forest();
+	Scene_forest(int brocks[3][2]);
 	void Forest_start();
 
 private:
@@ -33,8 +33,7 @@ private:
 	int character_jump[8];
 	int character_fall[8];
 	int animation_frame[3][2];
-	bool animation_flag[2] = { false, false };
-
+	bool animation_flag[3] = { false, false, false };
 	int jump_brock_cache = 0;
 
 

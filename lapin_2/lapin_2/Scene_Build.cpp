@@ -46,8 +46,6 @@ void Scene_Build::Build_Window()
 		//画面クリア
 		ClearDrawScreen();
 
-		/*BG_scroll();*/
-
 		//背景描画
 		DrawGraph(BG_X[0], 0, BG, TRUE);//z
 		DrawGraph(BG_X[1], 0, BG, TRUE);//z
@@ -59,8 +57,6 @@ void Scene_Build::Build_Window()
 
 		//インターフェース描画
 		DrawGraph(0, 0, UI_image, true);
-		//DrawGraph(Win_config.WIN_WIDTH - arrowWidth, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//前進
-		//DrawTurnGraph(192, Win_config.WIN_HEIGHT / 2 - arrowHeight / 2, Scroll_arrow, TRUE);//後退
 
 		//再生処理
 		for (auto i = 0; i < 2; i++) {
@@ -117,47 +113,19 @@ void Scene_Build::Build_Window()
 
 		ScreenFlip();
 		WaitTimer(20);
-		/*if (click) { break; }*/
 		if (Startbutton_flag == true) { break; }
 		if (ProcessMessage() == -1) { break; }
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) { break; }
 	}
 }
 
-//背景スクロール
-//void Scene_Build::BG_scroll()//z
-//{
-//	Window_config Win_config;
-//	bool MosueLeftInput = MouseDown && !oldMouseDown;
-//	bool scrollLeftFlag = MousePos[0] > 192 && MousePos[0] < 192 + 32 && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
-//	bool scrollRightFlag = MousePos[0] > Win_config.WIN_WIDTH - 32 && MousePos[0] < Win_config.WIN_WIDTH && MousePos[1] > Win_config.WIN_HEIGHT / 2 - 32 && MousePos[1] < Win_config.WIN_HEIGHT / 2 + 32;
-//
-//	int scrollVel = 100;
-//
-//	if (scrollRightFlag && MosueLeftInput)
-//	{
-//		BG_X[0] -= scrollVel;
-//		BG_X[1] -= scrollVel;
-//		World_x_adjust -= scrollVel;
-//	}
-//	if (scrollLeftFlag && MosueLeftInput)
-//	{
-//		BG_X[0] += scrollVel;
-//		BG_X[1] += scrollVel;
-//		World_x_adjust += scrollVel;
-//	}
-//	for (int i = 0; i < 2; ++i)
-//	{
-//		if (BG_X[i] < -Win_config.WIN_WIDTH)
-//		{
-//			BG_X[i] = Win_config.WIN_WIDTH - scrollVel;
-//		}
-//		if (BG_X[i] > Win_config.WIN_WIDTH)
-//		{
-//			BG_X[i] = -Win_config.WIN_WIDTH + scrollVel;
-//		}
-//	}
-//}
+void Scene_Build::output_brokpos(int brocks[3][2])
+{
+	for (auto i = 0; i < 3; i++) {
+		brocks[i][0] = brocks_pos[i][0];
+		brocks[i][1] = brocks_pos[i][1];
+	}
+}
 
 //落ち葉ブロックと通常ブロックの衝突判定
 bool Scene_Build::collision_defoliation_normal() {
