@@ -2,6 +2,7 @@
 
 #include "Scene_Build.h"
 #include "World_inport.h"
+#include "IO.h"
 
 Scene_Build::Scene_Build()
 {
@@ -28,8 +29,22 @@ Scene_Build::Scene_Build()
 
 void Scene_Build::Build_Window()
 {
+	while (true)
+	{
+		//IO初期化/前フレームIO情報キャッシュ
+		Standard_initialize_IO.key_Initialize(keys, oldkeys);
+		Standard_initialize_IO.Mouse_Initialize(&MouseDown, &oldMouseDown, MousePos);
+		bool click = keys[KEY_INPUT_SPACE] && !oldkeys[KEY_INPUT_SPACE];
 
-	while () {
+		//画面クリア
+		ClearDrawScreen();
 
+		
+
+		ScreenFlip();
+		WaitTimer(20);
+		if (click) { break; }
+		if (ProcessMessage() == -1) { break; }
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) { break; }
 	}
 }

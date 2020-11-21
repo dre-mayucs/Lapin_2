@@ -13,9 +13,6 @@ Scene_Start::Scene_Start()
 
 void Scene_Start::Start_Window()
 {
-	//IO初期化
-	IO Standard_initialize_IO;
-
 	//ゲームメインループ
 	while (true)
 	{
