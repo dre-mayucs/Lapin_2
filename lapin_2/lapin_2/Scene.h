@@ -1,7 +1,7 @@
 #pragma once
 #include "IO.h"
-class Scene
-{
+
+class Scene {
 public:
 	IO Standard_initialize_IO;
 
@@ -10,13 +10,13 @@ public:
 	int User_brock_pos[3][2];
 
 	//キーボード入力情報
-	char keys[256] = { 0 };
-	char oldkeys[256] = { 0 };
+	char keys[256] = {0};
+	char oldkeys[256] = {0};
 
 	//マウス入力情報
 	bool MouseDown = false, oldMouseDown = false;
-	int MousePos[2] = { 0 };
-	int oldMouse_pos[2] = { 0 };
+	int MousePos[2] = {0};
+	int oldMouse_pos[2] = {0};
 
 public:
 	Scene();
