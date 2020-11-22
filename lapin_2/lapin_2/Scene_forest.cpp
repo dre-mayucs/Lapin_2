@@ -229,7 +229,7 @@ void Scene_forest::Animation()
 			animation_frame[1][0] = 0;
 			animation_flag[1] = false;
 
-			character_pos_y -= 64 * 3;
+			character_pos_y -= 64 * 2;
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
@@ -242,7 +242,11 @@ void Scene_forest::Animation()
 		if (animation_frame[1][0] == 8) {
 			animation_frame[1][0] = 0;
 			animation_flag[2] = false;
-			character_pos_y += 128;
+
+			while (true) {
+				character_pos_y++;
+				if (character_pos_y >= 325) { break; }
+			}
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
