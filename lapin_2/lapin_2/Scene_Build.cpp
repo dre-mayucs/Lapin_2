@@ -6,29 +6,30 @@
 #include "Collision.h"
 #include "World_inport.h"
 
-Scene_Build::Scene_Build() {
+Scene_Build::Scene_Build(std::string scene_name) {
 	//ÉèÅ[ÉãÉhì«Ç›çûÇ›
 	World_inport inport;
-	//forest
-	inport.Inport(World, "stage.scene", &World_value);
-	BG = LoadGraph("Resources\\Background\\background.png");
-	//city
-	/*inport.Inport(World, "stage2.scene", &World_value);
-	BG = LoadGraph("Resources\\Background\\background_2.png");*/
 
-	//ëfçﬁíËã`
+	if (scene_name == "forest") {
+		//forest
+		inport.Inport(World, "stage.scene", &World_value);
+		BG = LoadGraph("Resources\\Background\\background.png");
 
-	//forest
-	LoadDivGraph("Resources\\Object\\defoliation-Sheet.png", DEFOLIATION_NUM, DEFOLIATION_NUM, 1, BLOCK_SIZE,
-	             BLOCK_SIZE, defoliation_brock);
-	LoadDivGraph("Resources\\Object\\jump-Sheet.png", JUMP_NUM, JUMP_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, jump_brock);
-	LoadDivGraph("Resources\\Object\\block.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block1);
+		LoadDivGraph("Resources\\Object\\defoliation-Sheet.png", DEFOLIATION_NUM, DEFOLIATION_NUM, 1, BLOCK_SIZE,
+			BLOCK_SIZE, defoliation_brock);
+		LoadDivGraph("Resources\\Object\\jump-Sheet.png", JUMP_NUM, JUMP_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, jump_brock);
+		LoadDivGraph("Resources\\Object\\block.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block1);
+	}
+	else if (scene_name == "city") {
+		//city
+		inport.Inport(World, "stage_city02.scene", &World_value);
+		BG = LoadGraph("Resources\\Background\\background_2.png");
 
-	//city
-	LoadDivGraph("Resources\\Object\\manhole-Sheet.png", MANHOLE_NUM, MANHOLE_NUM, 1, BLOCK_SIZE,
-	             BLOCK_SIZE, manhole_block);
-	LoadDivGraph("Resources\\Object\\jump_city-Sheet.png", FAN_NUM, FAN_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, fan_block);
-	LoadDivGraph("Resources\\Object\\block_2.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block2);
+		LoadDivGraph("Resources\\Object\\manhole-Sheet.png", MANHOLE_NUM, MANHOLE_NUM, 1, BLOCK_SIZE,
+			BLOCK_SIZE, manhole_block);
+		LoadDivGraph("Resources\\Object\\jump_city-Sheet.png", FAN_NUM, FAN_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, fan_block);
+		LoadDivGraph("Resources\\Object\\block_2.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block2);
+	}
 
 	UI_image = LoadGraph("Resources\\UI\\bar.png");
 	Scroll_arrow = LoadGraph("Resources\\UI\\scroll.png");

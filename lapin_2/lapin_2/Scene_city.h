@@ -21,16 +21,14 @@ private:
 	World_inport inport;
 	Collision collision;
 
-	bool default_collision;
-	bool top_collision;
-	bool under_collision;
-	bool play_flag[3] = {false, false, false};
-	bool use_play_flag[3] = {false, false, false};
+	int delay_frame = 0;
+
+	int __frame_cache = 0;
 
 	int Worldadjust = 0;
 	int adjust_cache = 0;
 	int Background = 0;
-	int BG_position[2] = {0, 800};
+	int BG_position[2] = { 0, 800 };
 
 	//キャラクター
 	int character_pos_x = 100;
@@ -39,8 +37,19 @@ private:
 	int character_jump[8];
 	int character_fall[8];
 	int animation_frame[3][2];
-	bool animation_flag[3] = {false, false, false};
+	bool animation_flag[4] = { false, false, false, false };
+
+	bool user_brocks_animation_flag_cache[2] = { false , false };
+	int user_brocks_animation[2] = { 0, 0 };
+	int user_brocks_animation_cache[2] = { 0, 0 };
 	int jump_brock_cache = 0;
+
+	bool default_collision = false;
+	bool top_collision = false;
+	bool under_collision = false;
+	bool play_flag[3] = { false, false, false };
+	bool use_play_flag[3] = { false, false, false };
+	bool break_flag = false;
 
 
 	//ブロック

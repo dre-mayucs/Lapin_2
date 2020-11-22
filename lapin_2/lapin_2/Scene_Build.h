@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "iostream"
 
 #define BLOCK_X 0
 #define BLOCK_Y 1
@@ -12,7 +13,7 @@
 
 class Scene_Build : public Scene {
 public:
-	Scene_Build();
+	Scene_Build(std::string scene_name);
 	void Build_Window();
 	void output_brokpos(int brocks[3][2]);
 

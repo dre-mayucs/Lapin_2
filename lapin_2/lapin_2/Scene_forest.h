@@ -22,6 +22,8 @@ private:
 	World_inport inport;
 	Collision collision;
 
+	int delay_frame = 0;
+
 	int __frame_cache = 0;
 
 	int Worldadjust = 0;

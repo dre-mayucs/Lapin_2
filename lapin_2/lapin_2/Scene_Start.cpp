@@ -1,7 +1,9 @@
 #include "DxLib.h"
-
 #include "Scene_Start.h"
 #include "IO.h"
+#include "Scene_Build.h"
+#include "Scene_forest.h"
+#include "Scene_city.h"
 
 #define BASE_FRAME 0
 #define CACHE_FRAME 1
@@ -38,8 +40,70 @@ void Scene_Start::Start_Window()
 
 		ScreenFlip();
 		WaitTimer(20);
-		if (click) { break; }
+		if (click) { 
+			menu();
+			break; 
+		}
 		if (ProcessMessage() == -1) { break; }
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) { break; }
 	}
 }
+void Scene_Start::menu()
+{
+	Scene_Build *build;
+	Scene_forest *forest;
+	Scene_city *city;
+	//ゲームメインループ
+	while (true)
+	{
+		//IO初期化/前フレームIO情報キャッシュ
+		Standard_initialize_IO.key_Initialize(keys, oldkeys);
+		Standard_initialize_IO.Mouse_Initialize(&MouseDown, &oldMouseDown, MousePos);
+
+		//画面クリア
+		ClearDrawScreen();
+
+		DrawGraph(0, 0, Background, false);
+
+		//チュートリアル
+		if (keys[KEY_INPUT_Z] && !oldkeys[KEY_INPUT_Z]) {
+			SetWindowSize(1600, 450);
+			build = new Scene_Build("forest");
+			build->Build_Window();
+			build->output_brokpos(user_brocks_pos);
+			delete build;
+
+			SetWindowSize(800, 450);
+			forest = new Scene_forest(user_brocks_pos);
+			forest -> Forest_start();
+			delete forest;
+		}
+
+		//都市
+		if (keys[KEY_INPUT_X] && !oldkeys[KEY_INPUT_X]) {
+			SetWindowSize(1600, 450);
+			build = new Scene_Build("city");
+			build->Build_Window();
+			build->output_brokpos(user_brocks_pos);
+			delete build;
+
+			SetWindowSize(800, 450);
+			city = new Scene_city(user_brocks_pos);
+			city->City_start();
+			delete city;
+		}
+
+		ScreenFlip();
+		WaitTimer(20);
+		if (ProcessMessage() == -1) { break; }
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) { break; }
+	}
+}
+/*
+
+	//ステージ実行シーン
+	SetWindowSize(800, 450);
+	Scene_forest *forest = new Scene_forest(user_brocks_pos);
+	forest->Forest_start();
+	delete forest;
+*/

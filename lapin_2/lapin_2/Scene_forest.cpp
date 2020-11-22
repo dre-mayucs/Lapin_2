@@ -43,29 +43,49 @@ void Scene_forest::Forest_start()
 		//画面クリア
 		ClearDrawScreen();
 
-		//背景描画/処理
-		DrawBackground();
-
-		//当たり判定処理群
-		collision_all();
-
-		//ブロック描画
-		DrawBrocks();
-		DrawGraph(goal_pos[0] + Worldadjust, goal_pos[1], goal, true);
-
 		//終了処理(ゴール)
 		if (collision.box_Fanc(
 			(double)goal_pos[0] + Worldadjust + 100, (double)goal_pos[0] + Worldadjust + 208, goal_pos[1], (double)goal_pos[1] + 240,
 			character_pos_x, (double)character_pos_x + 64, character_pos_y, (double)character_pos_y + 64
 		)) {
-			break;
+			DrawGraph(BG_position[0], 0, Background, true);
+			DrawGraph(BG_position[1], 0, Background, true);
+
+			//ブロック描画
+			DrawBrocks();
+
+			//ゴール描画
+			DrawGraph(goal_pos[0] + Worldadjust, goal_pos[1], goal, true);
+
+			//キャラクター動作
+			Character_motion();
+
+			//キャラクターアニメーション
+			Animation();
+
+			DrawFormatString(character_pos_x + 100, character_pos_y - 100, GetColor(0, 0, 0), "Goal!!!");
+			delay_frame++;
+			if (delay_frame == 180) { break; }
 		}
+		else {
+			//背景描画/処理
+			DrawBackground();
 
-		//キャラクター動作
-		Character_motion();
+			//当たり判定処理群
+			collision_all();
 
-		//キャラクターアニメーション
-		Animation();
+			//ブロック描画
+			DrawBrocks();
+
+			//ゴール描画
+			DrawGraph(goal_pos[0] + Worldadjust, goal_pos[1], goal, true);
+
+			//キャラクター動作
+			Character_motion();
+
+			//キャラクターアニメーション
+			Animation();
+		}
 		/// <summary>
 		/// DEBUG_当たり判定可視化処理
 		/// </summary>
@@ -203,9 +223,9 @@ void Scene_forest::DrawBrocks()
 
 	//ユーザー定義ブロック描画
 	if (user_brocks_animation_flag_cache[0] == true) {
-		if (user_brocks_animation[0] == 4) {
+		if (user_brocks_animation[0] == 6) {
 			user_brocks_animation[0] = 0;
-			user_brocks_animation_flag_cache[0] == false;
+			user_brocks_animation_flag_cache[0] = false;
 		}
 		if (user_brocks_animation_cache[0] == 4) {
 			user_brocks_animation_cache[0] = 0;
@@ -218,8 +238,25 @@ void Scene_forest::DrawBrocks()
 	else {
 		DrawGraph(User_brock_pos[0][0], User_brock_pos[0][1], defoliation_brock[0], true); //落下ブロック
 	}
+
+	if (user_brocks_animation_flag_cache[1] == true) {
+		if (user_brocks_animation[1] == 4) {
+			user_brocks_animation[1] = 0;
+			user_brocks_animation_flag_cache[1] = false;
+		}
+		if (user_brocks_animation_cache[1] == 4) {
+			user_brocks_animation_cache[1] = 0;
+			user_brocks_animation[1]++;
+		}
+		user_brocks_animation_cache[1]++;
+
+		DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[user_brocks_animation[1]], true); //ジャンプブロック
+	}
+	else {
+		DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[0], true); //ジャンプブロック
+	}
+
 	DrawGraph(User_brock_pos[1][0], User_brock_pos[1][1], nomal_block[0], true); //通常ブロック
-	DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[0], true); //ジャンプブロック
 }
 
 bool break_flag = false;

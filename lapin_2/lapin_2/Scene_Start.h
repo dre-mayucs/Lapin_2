@@ -11,6 +11,11 @@ public:
 	void Start_Window();
 
 private:
+	void menu();
+
+private:
+	int user_brocks_pos[3][2];
+
 	//animation
 	int frame[2] = { 0, 0 };
 
