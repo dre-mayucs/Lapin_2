@@ -22,6 +22,8 @@ private:
 	World_inport inport;
 	Collision collision;
 
+	int __frame_cache = 0;
+
 	int Worldadjust = 0;
 	int adjust_cache = 0;
 	int Background = 0;
@@ -34,9 +36,8 @@ private:
 	int character_jump[8];
 	int character_fall[8];
 	int animation_frame[3][2];
-	bool animation_flag[3] = { false, false, false };
+	bool animation_flag[4] = { false, false, false, false };
 	int jump_brock_cache = 0;
-
 
 	//ƒuƒƒbƒN
 	int defoliation_brock[7];

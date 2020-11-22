@@ -18,7 +18,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//タイトル
 	Scene_Start *start = new Scene_Start;
 	start->Start_Window();
-	delete start;
+ 	delete start;
 
 	//ステージ制作シーン
 	SetWindowSize(1600, 450);

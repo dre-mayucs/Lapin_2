@@ -207,6 +207,7 @@ void Scene_forest::DrawBrocks()
 	DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[0], true); //ジャンプブロック
 }
 
+bool break_flag = false;
 void Scene_forest::Animation()
 {
 	if (animation_flag[0]) {
@@ -223,13 +224,19 @@ void Scene_forest::Animation()
 		}
 		animation_frame[0][1]++;
 	}
-	else if (animation_flag[1]) {
-		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[1][0]], true);
-		if (animation_frame[1][0] == 8) {
-			animation_frame[1][0] = 0;
-			animation_flag[1] = false;
-
+	if (animation_flag[1]) {
+		DrawGraph(character_pos_x, character_pos_y, character_jump[animation_frame[1][0]], true);
+		if (animation_frame[1][0] == 8 && __frame_cache == 0) {
 			character_pos_y -= 64 * 2;
+			animation_frame[1][0] = 0;
+			__frame_cache = 1;
+		}
+		else if (__frame_cache != 0) {
+			if (__frame_cache >= 45) {
+				animation_flag[1] = false;
+				__frame_cache = 0;
+			}
+			else { __frame_cache++; }
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
@@ -237,24 +244,46 @@ void Scene_forest::Animation()
 		}
 		animation_frame[1][1]++;
 	}
-	else if (animation_flag[2]) {
-		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[1][0]], true);
-		if (animation_frame[1][0] == 8) {
-			animation_frame[1][0] = 0;
+	if (animation_flag[2]) {
+		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[2][0]], true);
+		if (animation_frame[2][0] == 8) {
+			animation_frame[2][0] = 0;
 			animation_flag[2] = false;
 
 			while (true) {
+				for (auto i = 0; i < World_value; i++) {
+					if (collision.box_Fanc(
+						(double)character_pos_x + 30, (double)character_pos_x + 34, (double)character_pos_y + 64, (double)character_pos_y + 75,
+						(double)World[i][0] + Worldadjust, (double)World[i][0] + Worldadjust + 64, (double)World[i][1], (double)World[i][1] + 64
+					)) {
+						break_flag = true;
+						break;
+					}
+				}
+				if (character_pos_y >= 325 || break_flag == true) { break_flag = false; break; }
 				character_pos_y++;
-				if (character_pos_y >= 325) { break; }
 			}
 		}
-		if (animation_frame[1][1] == 3) {
-			animation_frame[1][0]++;
-			animation_frame[1][1] = 0;
+		if (animation_frame[2][1] == 3) {
+			animation_frame[2][0]++;
+			animation_frame[2][1] = 0;
 		}
-		animation_frame[1][1]++;
+		animation_frame[2][1]++;
 	}
-	else {
+	if (animation_flag[3]) {
+		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[2][0]], true);
+		if (animation_frame[2][0] == 8) {
+			animation_frame[2][0] = 0;
+			animation_flag[3] = false;
+			character_pos_y += 128;
+		}
+		if (animation_frame[2][1] == 3) {
+			animation_frame[2][0]++;
+			animation_frame[2][1] = 0;
+		}
+		animation_frame[2][1]++;
+	}
+	if(!animation_flag[0] && !animation_flag[1] && !animation_flag[2] && !animation_flag[3]) {
 		DrawGraph(character_pos_x, character_pos_y, character[animation_frame[2][0]], true);
 		if (animation_frame[2][0] == 6) {
 			animation_frame[2][0] = 0;
@@ -281,22 +310,22 @@ void Scene_forest::Character_motion()
 
 	//落下処理
 	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && 
-		character_pos_y < 325 && animation_flag[2] != true && cache == false && animation_flag[1] == false) {
+		character_pos_y < 325 && animation_flag[2] != true && cache == false && animation_flag[1] == false && animation_flag[2] == false) {
 		animation_flag[2] = true;
 	}
 
 	//ユーザー定義ブロック(落下)
-	if (use_play_flag[0] == false) {
-		animation_flag[2] = true;
+	if (use_play_flag[0] == false && use_play_flag[1] == true && use_play_flag[2] == true) {
+		animation_flag[3] = true;
 	}
 
 	//ユーザー定義ブロック(ノーマル)
-	if (use_play_flag[1] == false) {
+	if (use_play_flag[0] == true && use_play_flag[1] == false && use_play_flag[2] == true) {
 		animation_flag[0] = true;
 	}
 
 	//ユーザー定義ブロック(ジャンプ)
-	if (use_play_flag[2] == false) {
+	if (use_play_flag[0] == true && use_play_flag[1] == true && use_play_flag[2] == false) {
 		animation_flag[1] = true;
 	}
 }
