@@ -1,8 +1,7 @@
 #include "DxLib.h"
 #include "Scene_forest.h"
 
-Scene_forest::Scene_forest(int brocks[3][2])
-{
+Scene_forest::Scene_forest(int brocks[3][2]) {
 	//キャラクター
 	Background = LoadGraph("Resources\\Background\\background.png");
 	LoadDivGraph("Resources\\chr\\char1.png", 6, 6, 1, 64, 64, character);
@@ -26,13 +25,7 @@ Scene_forest::Scene_forest(int brocks[3][2])
 	}
 }
 
-bool default_collision;
-bool top_collision;
-bool under_collision;
-bool play_flag[3] = { false, false, false };
-bool use_play_flag[3] = { false, false, false };
-void Scene_forest::Forest_start()
-{
+void Scene_forest::Forest_start() {
 	inport.Inport(World, "stage.scene", &World_value);
 	while (true) {
 		//IO初期化/前フレームIO情報キャッシュ
@@ -55,8 +48,10 @@ void Scene_forest::Forest_start()
 
 		//終了処理(ゴール)
 		if (collision.box_Fanc(
-			(double)goal_pos[0] + Worldadjust + 100, (double)goal_pos[0] + Worldadjust + 208, goal_pos[1], (double)goal_pos[1] + 240,
-			character_pos_x, (double)character_pos_x + 64, character_pos_y, (double)character_pos_y + 64
+			static_cast<double>(goal_pos[0]) + Worldadjust + 100, static_cast<double>(goal_pos[0]) + Worldadjust + 208,
+			goal_pos[1], static_cast<double>(goal_pos[1]) + 240,
+			character_pos_x, static_cast<double>(character_pos_x) + 64, character_pos_y,
+			static_cast<double>(character_pos_y) + 64
 		)) {
 			break;
 		}
@@ -71,25 +66,32 @@ void Scene_forest::Forest_start()
 		/// DEBUG_当たり判定可視化処理
 		/// </summary>
 		for (auto i = 0; i < World_value; i++) {
-			DrawCircle((double)character_pos_x + 64, (double)character_pos_y + 32, 4, GetColor(0, 0, 0), true);
-			DrawCircle((double)character_pos_x + 64, (double)character_pos_y - 32, 4, GetColor(0, 0, 0), true);
-			DrawCircle((double)character_pos_x + 32, (double)character_pos_y + 64, 4, GetColor(0, 0, 0), true);
-			DrawCircle((double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32, GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) + 32, 4,
+			           GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) - 32, 4,
+			           GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(character_pos_x) + 32, static_cast<double>(character_pos_y) + 64, 4,
+			           GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(World[i][0]) + Worldadjust + 32, static_cast<double>(World[i][1]) + 32, 32,
+			           GetColor(0, 0, 0), true);
 
-			DrawCircle((double)User_brock_pos[0][0] + 32, (double)User_brock_pos[0][1] + 32, 32, GetColor(0, 0, 0), true);
-			DrawCircle((double)User_brock_pos[1][0] + 32, (double)User_brock_pos[1][1] + 32, 32, GetColor(0, 0, 0), true);
-			DrawCircle((double)User_brock_pos[2][0] + 32, (double)User_brock_pos[2][1] + 32, 32, GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(User_brock_pos[0][0]) + 32, static_cast<double>(User_brock_pos[0][1]) + 32,
+			           32, GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(User_brock_pos[1][0]) + 32, static_cast<double>(User_brock_pos[1][1]) + 32,
+			           32, GetColor(0, 0, 0), true);
+			DrawCircle(static_cast<double>(User_brock_pos[2][0]) + 32, static_cast<double>(User_brock_pos[2][1]) + 32,
+			           32, GetColor(0, 0, 0), true);
 		}
-		DrawFormatString(200, 50, GetColor(0, 0, 0), "%s\n%s\n%s", 
-			play_flag[0] ? "true" : "false",
-			play_flag[1] ? "true" : "false",
-			play_flag[2] ? "true" : "false"
+		DrawFormatString(200, 50, GetColor(0, 0, 0), "%s\n%s\n%s",
+		                 play_flag[0] ? "true" : "false",
+		                 play_flag[1] ? "true" : "false",
+		                 play_flag[2] ? "true" : "false"
 		);
 
 		DrawFormatString(250, 50, GetColor(0, 0, 0), "%s\n%s\n%s",
-			use_play_flag[0] ? "true" : "false",
-			use_play_flag[1] ? "true" : "false",
-			use_play_flag[2] ? "true" : "false"
+		                 use_play_flag[0] ? "true" : "false",
+		                 use_play_flag[1] ? "true" : "false",
+		                 use_play_flag[2] ? "true" : "false"
 		);
 
 		ScreenFlip();
@@ -99,68 +101,57 @@ void Scene_forest::Forest_start()
 	}
 }
 
-void Scene_forest::collision_all()
-{
+void Scene_forest::collision_all() {
 	for (auto i = 0; i < World_value; i++) {
 		default_collision = collision.Trigonometric_Fanc(
-			(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-			(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32
+			static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) + 32, 4,
+			static_cast<double>(World[i][0]) + Worldadjust + 32, static_cast<double>(World[i][1]) + 32, 32
 		);
 		if (default_collision) {
 			play_flag[0] = false;
 			break;
 		}
-		else {
-			play_flag[0] = true;
-		}
+		play_flag[0] = true;
 	}
 
 	for (auto i = 0; i < World_value; i++) {
 		top_collision = collision.Trigonometric_Fanc(
-			(double)character_pos_x + 64, (double)character_pos_y - 32, 4,
-			(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32
+			static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) - 32, 4,
+			static_cast<double>(World[i][0]) + Worldadjust + 32, static_cast<double>(World[i][1]) + 32, 32
 		);
 		if (top_collision) {
 			play_flag[1] = false;
 			break;
 		}
-		else {
-			play_flag[1] = true;
-		}
+		play_flag[1] = true;
 	}
 
 	for (auto i = 0; i < World_value; i++) {
 		under_collision = collision.Trigonometric_Fanc(
-			(double)character_pos_x + 32, (double)character_pos_y + 64, 4,
-			(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32
+			static_cast<double>(character_pos_x) + 32, static_cast<double>(character_pos_y) + 64, 4,
+			static_cast<double>(World[i][0]) + Worldadjust + 32, static_cast<double>(World[i][1]) + 32, 32
 		);
 		if (under_collision) {
 			play_flag[2] = false;
 			break;
 		}
-		else {
-			play_flag[2] = true;
-		}
+		play_flag[2] = true;
 	}
 
 	use_play_flag[0] = !collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-		(double)User_brock_pos[0][0]+ 32, (double)User_brock_pos[0][1] + 32, 32)
-		;
+		static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) + 32, 4,
+		static_cast<double>(User_brock_pos[0][0]) + 32, static_cast<double>(User_brock_pos[0][1]) + 32, 32);
 
 	use_play_flag[1] = !collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-		(double)User_brock_pos[1][0] + 32, (double)User_brock_pos[1][1] + 32, 32)
-		;
+		static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) + 32, 4,
+		static_cast<double>(User_brock_pos[1][0]) + 32, static_cast<double>(User_brock_pos[1][1]) + 32, 32);
 
 	use_play_flag[2] = !collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-		(double)User_brock_pos[2][0] + 32, (double)User_brock_pos[2][1] + 32, 32)
-		;
+		static_cast<double>(character_pos_x) + 64, static_cast<double>(character_pos_y) + 32, 4,
+		static_cast<double>(User_brock_pos[2][0]) + 32, static_cast<double>(User_brock_pos[2][1]) + 32, 32);
 }
 
-void Scene_forest::DrawBackground()
-{
+void Scene_forest::DrawBackground() {
 	if (play_flag[0] == true || play_flag[1] == true) {
 		Worldadjust -= 2;
 
@@ -184,8 +175,7 @@ void Scene_forest::DrawBackground()
 	DrawGraph(BG_position[1], 0, Background, true);
 }
 
-void Scene_forest::DrawBrocks()
-{
+void Scene_forest::DrawBrocks() {
 	//既存ワールドデータ描画
 	for (auto i = 0; i < World_value; i++) {
 		DrawGraph(World[i][0] + Worldadjust, World[i][1], nomal_block[0], true); //通常ブロック
@@ -197,8 +187,7 @@ void Scene_forest::DrawBrocks()
 	DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[0], true); //ジャンプブロック
 }
 
-void Scene_forest::Animation()
-{
+void Scene_forest::Animation() {
 	if (animation_flag[0]) {
 		DrawGraph(character_pos_x, character_pos_y, character_jump[animation_frame[0][0]], true);
 		if (animation_frame[0][0] == 8) {
@@ -262,15 +251,15 @@ void Scene_forest::Animation()
 //bool under_front_collision;
 //bool gravity_flag = false;
 //int brock_collision_num_cache = 0;
-void Scene_forest::Character_motion()
-{
+void Scene_forest::Character_motion() {
 	//通常ブロック(ジャンプ)
 	if (play_flag[0] == false && play_flag[1] == true) {
 		animation_flag[0] = true;
 	}
 
 	//落下処理
-	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && use_play_flag[1] == true && character_pos_y < 325) {
+	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false &&
+		use_play_flag[1] == true && character_pos_y < 325) {
 		animation_flag[2] = true;
 	}
 
