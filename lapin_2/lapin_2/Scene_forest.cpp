@@ -231,14 +231,17 @@ void Scene_forest::Animation()
 	}
 	else if (animation_flag[2]) {
 		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[1][0]], true);
+		if (animation_frame[1][0] == 4) {
+			character_pos_y += 32;
+		}
 		if (animation_frame[1][0] == 8) {
 			animation_frame[1][0] = 0;
 			animation_flag[2] = false;
+			character_pos_y += 32;
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
 			animation_frame[1][1] = 0;
-			character_pos_y += 64 / 27;
 		}
 		animation_frame[1][1]++;
 	}
@@ -267,7 +270,12 @@ void Scene_forest::Character_motion()
 	}
 
 	//落下処理
-	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && character_pos_y < 325) {
+	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && use_play_flag[1] == true && character_pos_y < 325) {
+		animation_flag[2] = true;
+	}
+
+	//ユーザー定義ブロック(落下)
+	if (use_play_flag[0] == false) {
 		animation_flag[2] = true;
 	}
 
@@ -275,58 +283,4 @@ void Scene_forest::Character_motion()
 	if (use_play_flag[1] == false) {
 		animation_flag[0] = true;
 	}
-
-#pragma region 遺産
-	//bool center_collision;
-	//for (auto i = 0; i < World_value; i++) {
-	//	center_collision = collision.Trigonometric_Fanc(
-	//		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-	//		(double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 16, 32
-	//	);
-
-	//	if (center_collision) {
-	//		animation_flag[0] = true;
-	//		break;
-	//	}
-	//}
-
-	//for (auto i = 0; i < World_value; i++) {
-	//	under_collision = collision.box_Fanc(
-	//		character_pos_x, (double)character_pos_x + 64, (double)character_pos_y, (double)character_pos_y + 64,
-	//		(double)World[i][0] + Worldadjust, (double)World[i][0] + Worldadjust + 64, (double)World[i][1], (double)World[i][1] + 64
-	//	);
-
-	//	if (under_collision == false && animation_flag[0] == false && character_pos_y < 325) {
-	//		character_pos_y += 3;
-	//		/*animation_flag[2] = true;*/
-	//		break;
-	//	}
-	//}
-
-
-
-	/*center_collision = collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 60, 4,
-		(double)User_brock_pos[0][0] + 32, (double)User_brock_pos[0][1] + 32, 32
-	);
-	if (center_collision) {
-		animation_flag[1] = true;
-	}
-
-	center_collision = collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-		(double)User_brock_pos[1][0] + 32, (double)User_brock_pos[1][1] + 32, 32
-	);
-	if (center_collision) {
-		animation_flag[0] = true;
-	}
-
-	center_collision = collision.Trigonometric_Fanc(
-		(double)character_pos_x + 64, (double)character_pos_y + 32, 4,
-		(double)User_brock_pos[2][0] + 32, (double)User_brock_pos[2][1] + 32, 32
-	);
-	if (center_collision) {
-		animation_flag[2] = true;
-	}*/
-#pragma endregion
 }
