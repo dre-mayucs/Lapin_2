@@ -202,7 +202,22 @@ void Scene_forest::DrawBrocks()
 	}
 
 	//ユーザー定義ブロック描画
-	DrawGraph(User_brock_pos[0][0], User_brock_pos[0][1], defoliation_brock[0], true); //落下ブロック
+	if (user_brocks_animation_flag_cache[0] == true) {
+		if (user_brocks_animation[0] == 4) {
+			user_brocks_animation[0] = 0;
+			user_brocks_animation_flag_cache[0] == false;
+		}
+		if (user_brocks_animation_cache[0] == 4) {
+			user_brocks_animation_cache[0] = 0;
+			user_brocks_animation[0]++;
+		}
+		user_brocks_animation_cache[0]++;
+
+		DrawGraph(User_brock_pos[0][0], User_brock_pos[0][1], defoliation_brock[user_brocks_animation[0]], true); //落下ブロック
+	}
+	else {
+		DrawGraph(User_brock_pos[0][0], User_brock_pos[0][1], defoliation_brock[0], true); //落下ブロック
+	}
 	DrawGraph(User_brock_pos[1][0], User_brock_pos[1][1], nomal_block[0], true); //通常ブロック
 	DrawGraph(User_brock_pos[2][0], User_brock_pos[2][1], jump_brock[0], true); //ジャンプブロック
 }
@@ -309,13 +324,14 @@ void Scene_forest::Character_motion()
 	}
 
 	//落下処理
-	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && 
+	if (play_flag[0] == true && /*play_flag[1] == true &&*/ play_flag[2] == true && animation_flag[0] == false && 
 		character_pos_y < 325 && animation_flag[2] != true && cache == false && animation_flag[1] == false && animation_flag[2] == false) {
 		animation_flag[2] = true;
 	}
 
 	//ユーザー定義ブロック(落下)
 	if (use_play_flag[0] == false && use_play_flag[1] == true && use_play_flag[2] == true) {
+		user_brocks_animation_flag_cache[0] = true;
 		animation_flag[3] = true;
 	}
 
@@ -326,6 +342,7 @@ void Scene_forest::Character_motion()
 
 	//ユーザー定義ブロック(ジャンプ)
 	if (use_play_flag[0] == true && use_play_flag[1] == true && use_play_flag[2] == false) {
+		user_brocks_animation_flag_cache[1] = true;
 		animation_flag[1] = true;
 	}
 }

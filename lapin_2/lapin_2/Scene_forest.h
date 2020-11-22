@@ -37,6 +37,10 @@ private:
 	int character_fall[8];
 	int animation_frame[3][2];
 	bool animation_flag[4] = { false, false, false, false };
+
+	bool user_brocks_animation_flag_cache[2] = { false , false };
+	int user_brocks_animation[2] = { 0, 0 };
+	int user_brocks_animation_cache[2] = { 0, 0 };
 	int jump_brock_cache = 0;
 
 	//ƒuƒƒbƒN

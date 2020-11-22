@@ -6,18 +6,29 @@
 #include "Collision.h"
 #include "World_inport.h"
 
-Scene_Build::Scene_Build()
-{
+Scene_Build::Scene_Build() {
 	//ワールド読み込み
 	World_inport inport;
+	//forest
 	inport.Inport(World, "stage.scene", &World_value);
+	BG = LoadGraph("Resources\\Background\\background.png");
+	//city
+	/*inport.Inport(World, "stage2.scene", &World_value);
+	BG = LoadGraph("Resources\\Background\\background_2.png");*/
 
 	//素材定義
-	BG = LoadGraph("Resources\\Background\\background.png");
 
-	LoadDivGraph("Resources\\Object\\defoliation-Sheet.png", DEFOLIATION_NUM, DEFOLIATION_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, defoliation_brock);
+	//forest
+	LoadDivGraph("Resources\\Object\\defoliation-Sheet.png", DEFOLIATION_NUM, DEFOLIATION_NUM, 1, BLOCK_SIZE,
+	             BLOCK_SIZE, defoliation_brock);
 	LoadDivGraph("Resources\\Object\\jump-Sheet.png", JUMP_NUM, JUMP_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, jump_brock);
-	LoadDivGraph("Resources\\Object\\block.png", NOMAL_NUM, NOMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, nomal_block);
+	LoadDivGraph("Resources\\Object\\block.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block1);
+
+	//city
+	LoadDivGraph("Resources\\Object\\manhole-Sheet.png", MANHOLE_NUM, MANHOLE_NUM, 1, BLOCK_SIZE,
+	             BLOCK_SIZE, manhole_block);
+	LoadDivGraph("Resources\\Object\\jump_city-Sheet.png", FAN_NUM, FAN_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, fan_block);
+	LoadDivGraph("Resources\\Object\\block_2.png", NORMAL_NUM, NORMAL_NUM, 1, BLOCK_SIZE, BLOCK_SIZE, normal_block2);
 
 	UI_image = LoadGraph("Resources\\UI\\bar.png");
 	Scroll_arrow = LoadGraph("Resources\\UI\\scroll.png");
@@ -31,13 +42,11 @@ Scene_Build::Scene_Build()
 	}
 }
 
-void Scene_Build::Build_Window()
-{
+void Scene_Build::Build_Window() {
 	World_inport inport;
 	Window_config Win_config;
 	Collision collision;
-	while (true)
-	{
+	while (true) {
 		//IO初期化/前フレームIO情報キャッシュ
 		Standard_initialize_IO.key_Initialize(keys, oldkeys);
 		Standard_initialize_IO.Mouse_Initialize(&MouseDown, &oldMouseDown, MousePos);
@@ -47,13 +56,19 @@ void Scene_Build::Build_Window()
 		ClearDrawScreen();
 
 		//背景描画
-		DrawGraph(BG_X[0], 0, BG, TRUE);//z
-		DrawGraph(BG_X[1], 0, BG, TRUE);//z
+		DrawGraph(BG_X[0], 0, BG, TRUE); //z
+		DrawGraph(BG_X[1], 0, BG, TRUE); //z
 
 		//既存ワールドデータ描画
+
 		for (auto i = 0; i < World_value; i++) {
-			DrawGraph(World[i][0] + World_x_adjust, World[i][1], nomal_block[0], true); //通常ブロック
+			DrawGraph(World[i][0] + World_x_adjust, World[i][1], normal_block1[0], true); //通常ブロック
 		}
+
+		for (auto i = 0; i < World_value; i++) {
+			DrawGraph(World[i][0] + World_x_adjust, World[i][1], normal_block2[0], true); //通常ブロック
+		}
+
 
 		//インターフェース描画
 		DrawGraph(0, 0, UI_image, true);
@@ -61,7 +76,8 @@ void Scene_Build::Build_Window()
 		//再生処理
 		for (auto i = 0; i < 2; i++) {
 			//当たり判定
-			bool collision_start = collision.Trigonometric_Fanc(UI_Button_pos[i][0], UI_Button_pos[i][1], 32, MousePos[0], MousePos[1], 32);
+			bool collision_start = collision.Trigonometric_Fanc(UI_Button_pos[i][0], UI_Button_pos[i][1], 32,
+			                                                    MousePos[0], MousePos[1], 32);
 			//描画処理
 			DrawGraph(UI_Button_pos[i][0], UI_Button_pos[i][1], UI_Buttoniamge[i], true);
 
@@ -88,25 +104,57 @@ void Scene_Build::Build_Window()
 		//ブロック描画
 		for (auto i = 0; i < 3; i++) {
 			if (brocks_pos[i][BLOCK_X] == 10) {
+				//forest
 				if (i == 0) {
 					DrawGraph(brocks_pos[0][BLOCK_X], brocks_pos[0][BLOCK_Y], defoliation_brock[0], true); //落下ブロック
 				}
 				else if (i == 1) {
-					DrawGraph(brocks_pos[1][BLOCK_X], brocks_pos[1][BLOCK_Y], nomal_block[0], true); //通常ブロック
+					DrawGraph(brocks_pos[1][BLOCK_X], brocks_pos[1][BLOCK_Y], normal_block1[0], true); //通常ブロック
 				}
 				else {
 					DrawGraph(brocks_pos[2][BLOCK_X], brocks_pos[2][BLOCK_Y], jump_brock[0], true); //ジャンプブロック
 				}
 			}
 			else {
+				//forest
 				if (i == 0) {
-					DrawGraph(brocks_pos[0][BLOCK_X] + World_x_adjust, brocks_pos[0][BLOCK_Y], defoliation_brock[0], true); //落下ブロック
+					DrawGraph(brocks_pos[0][BLOCK_X] + World_x_adjust, brocks_pos[0][BLOCK_Y], defoliation_brock[0],
+					          true); //落下ブロック
 				}
 				else if (i == 1) {
-					DrawGraph(brocks_pos[1][BLOCK_X] + World_x_adjust, brocks_pos[1][BLOCK_Y], nomal_block[0], true); //通常ブロック
+					DrawGraph(brocks_pos[1][BLOCK_X] + World_x_adjust, brocks_pos[1][BLOCK_Y], normal_block1[0],
+					          true); //通常ブロック
 				}
 				else {
-					DrawGraph(brocks_pos[2][BLOCK_X] + World_x_adjust, brocks_pos[2][BLOCK_Y], jump_brock[0], true); //ジャンプブロック
+					DrawGraph(brocks_pos[2][BLOCK_X] + World_x_adjust, brocks_pos[2][BLOCK_Y], jump_brock[0],
+					          true); //ジャンプブロック
+				}
+			}
+			if (brocks_pos[i][BLOCK_X] == 10) {
+				//city
+				if (i == 0) {
+					DrawGraph(brocks_pos[0][BLOCK_X], brocks_pos[0][BLOCK_Y], manhole_block[0], true); //落下ブロック
+				}
+				else if (i == 1) {
+					DrawGraph(brocks_pos[1][BLOCK_X], brocks_pos[1][BLOCK_Y], normal_block2[0], true); //通常ブロック
+				}
+				else {
+					DrawGraph(brocks_pos[2][BLOCK_X], brocks_pos[2][BLOCK_Y], fan_block[0], true); //ジャンプブロック
+				}
+			}
+			else {
+				//city
+				if (i == 0) {
+					DrawGraph(brocks_pos[0][BLOCK_X] + World_x_adjust, brocks_pos[0][BLOCK_Y], manhole_block[0],
+					          true); //落下ブロック
+				}
+				else if (i == 1) {
+					DrawGraph(brocks_pos[1][BLOCK_X] + World_x_adjust, brocks_pos[1][BLOCK_Y], normal_block2[0],
+					          true); //通常ブロック
+				}
+				else {
+					DrawGraph(brocks_pos[2][BLOCK_X] + World_x_adjust, brocks_pos[2][BLOCK_Y], fan_block[0],
+					          true); //ジャンプブロック
 				}
 			}
 		}
@@ -119,8 +167,7 @@ void Scene_Build::Build_Window()
 	}
 }
 
-void Scene_Build::output_brokpos(int brocks[3][2])
-{
+void Scene_Build::output_brokpos(int brocks[3][2]) {
 	for (auto i = 0; i < 3; i++) {
 		brocks[i][0] = brocks_pos[i][0];
 		brocks[i][1] = brocks_pos[i][1];
@@ -158,7 +205,7 @@ bool Scene_Build::collision_jump_defoliation() {
 }
 
 //ブロック同士の衝突処理
-int Scene_Build::collision_block_otherblock(int *mouse_x, int *mouse_y, const int(*pos_tmp)[3], int num) {
+int Scene_Build::collision_block_otherblock(int* mouse_x, int* mouse_y, const int (*pos_tmp)[3], int num) {
 	if (mouse_x == nullptr || mouse_y == nullptr) {
 		return true;
 	}
@@ -183,7 +230,7 @@ int Scene_Build::collision_block_otherblock(int *mouse_x, int *mouse_y, const in
 	return false;
 }
 
-//マウスと落ち葉ブロックの衝突判定
+//マウスと落下ブロックの衝突判定
 bool Scene_Build::collision_defoliation_mouse() {
 	Collision collision;
 	return collision.box_Fanc(
