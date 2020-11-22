@@ -229,7 +229,7 @@ void Scene_forest::Animation()
 			animation_frame[1][0] = 0;
 			animation_flag[1] = false;
 
-			character_pos_y -= 128;
+			character_pos_y -= 64 * 3;
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
@@ -239,13 +239,10 @@ void Scene_forest::Animation()
 	}
 	else if (animation_flag[2]) {
 		DrawGraph(character_pos_x, character_pos_y, character_fall[animation_frame[1][0]], true);
-		if (animation_frame[1][0] == 4) {
-			character_pos_y += 32;
-		}
 		if (animation_frame[1][0] == 8) {
 			animation_frame[1][0] = 0;
 			animation_flag[2] = false;
-			character_pos_y += 32;
+			character_pos_y += 128;
 		}
 		if (animation_frame[1][1] == 3) {
 			animation_frame[1][0]++;
@@ -280,7 +277,7 @@ void Scene_forest::Character_motion()
 
 	//óéâ∫èàóù
 	if (play_flag[0] == true && play_flag[1] == true && play_flag[2] == true && animation_flag[0] == false && 
-		character_pos_y < 325 && animation_flag[2] != true && cache == false/*use_play_flag[1] == true && character_pos_y < 325*/) {
+		character_pos_y < 325 && animation_flag[2] != true && cache == false && animation_flag[1] == false) {
 		animation_flag[2] = true;
 	}
 
