@@ -61,7 +61,6 @@ void Scene_Build::Build_Window() {
 		DrawGraph(BG_X[1], 0, BG, TRUE); //z
 
 		//既存ワールドデータ描画
-
 		for (auto i = 0; i < World_value; i++) {
 			DrawGraph(World[i][0] + World_x_adjust, World[i][1], normal_block1[0], true); //通常ブロック
 		}
@@ -69,7 +68,6 @@ void Scene_Build::Build_Window() {
 		for (auto i = 0; i < World_value; i++) {
 			DrawGraph(World[i][0] + World_x_adjust, World[i][1], normal_block2[0], true); //通常ブロック
 		}
-
 
 		//インターフェース描画
 		DrawGraph(0, 0, UI_image, true);

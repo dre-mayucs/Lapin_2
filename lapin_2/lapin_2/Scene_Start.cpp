@@ -11,10 +11,16 @@ Scene_Start::Scene_Start()
 {
 	Background = LoadGraph("Resources\\Background\\background.png", true);
 	LoadDivGraph("Resources\\Background\\animation_title.png", 34, 34, 1, 800, 450, Mask_image);
+
+	Select_BG = LoadGraph("Resources\\Background\\select.png");
 }
 
 void Scene_Start::Start_Window()
 {
+	ChangeVolumeSoundMem(128, BGM);
+	ChangeVolumeSoundMem(128, Game_BGM);
+
+	PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 	//ゲームメインループ
 	while (true)
 	{
@@ -63,10 +69,16 @@ void Scene_Start::menu()
 		//画面クリア
 		ClearDrawScreen();
 
-		DrawGraph(0, 0, Background, false);
+		DrawGraph(0, 0, Select_BG, false);
 
-		//チュートリアル
-		if (keys[KEY_INPUT_Z] && !oldkeys[KEY_INPUT_Z]) {
+		//チュートリアル、徳井...w
+		if (MouseDown == true && 
+			collision.box_Fanc(
+				(double)window.WIN_WIDTH - 160 - 250, (double)window.WIN_WIDTH - 160, (double)window.WIN_HEIGHT - 139 * 2 - 16 * 2, (double)window.WIN_HEIGHT - 139 - 16 * 2,
+				(double)MousePos[0] - 5, (double)MousePos[0] + 5, (double)MousePos[1] - 5, (double)MousePos[1] + 5
+		)) {
+			StopSoundMem(BGM);
+			PlaySoundMem(Game_BGM, DX_PLAYTYPE_LOOP);
 			SetWindowSize(1600, 450);
 			build = new Scene_Build("forest");
 			build->Build_Window();
@@ -75,12 +87,20 @@ void Scene_Start::menu()
 
 			SetWindowSize(800, 450);
 			forest = new Scene_forest(user_brocks_pos);
-			forest -> Forest_start();
+			forest->Forest_start();
 			delete forest;
+			StopSoundMem(Game_BGM);
+			PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 		}
 
 		//都市
-		if (keys[KEY_INPUT_X] && !oldkeys[KEY_INPUT_X]) {
+		if (MouseDown == true && 
+			collision.box_Fanc(
+				(double)window.WIN_WIDTH - 16 - 250, (double)window.WIN_WIDTH - 16, (double)window.WIN_HEIGHT - 16 - 139, (double)window.WIN_HEIGHT - 16,
+				(double)MousePos[0] - 5, (double)MousePos[0] + 5, (double)MousePos[1] - 5, (double)MousePos[1] + 5
+		)) {
+			StopSoundMem(BGM);
+			PlaySoundMem(Game_BGM, DX_PLAYTYPE_LOOP);
 			SetWindowSize(1600, 450);
 			build = new Scene_Build("city");
 			build->Build_Window();
@@ -91,8 +111,9 @@ void Scene_Start::menu()
 			city = new Scene_city(user_brocks_pos);
 			city->City_start();
 			delete city;
+			StopSoundMem(Game_BGM);
+			PlaySoundMem(BGM, DX_PLAYTYPE_LOOP);
 		}
-
 		ScreenFlip();
 		WaitTimer(20);
 		if (ProcessMessage() == -1) { break; }

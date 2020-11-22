@@ -58,4 +58,8 @@ private:
 	int normal_block2[2];
 	int goal = 0;
 	int goal_pos[2] = {1500, 150};
+
+	//SE
+	int manhole_SE = LoadSoundMem("Resources\\sounds\\manhole.mp3");
+	int fan_SE = LoadSoundMem("Resources\\sounds\\fun.mp3");
 };

@@ -51,5 +51,8 @@ private:
 	int nomal_block[2];
 	int goal = 0;
 	int goal_pos[2] = {1500, 150};
+
+	int mush_SE = LoadSoundMem("Resources\\sounds\\mushroom.mp3");
+	int defo_SE = LoadSoundMem("Resources\\sounds\\defoliation.mp3");
 };
 

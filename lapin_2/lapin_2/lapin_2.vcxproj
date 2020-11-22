@@ -157,6 +157,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene_Build.cpp" />
+    <ClCompile Include="Scene_city.cpp" />
+    <ClCompile Include="Scene_forest.cpp" />
     <ClCompile Include="Scene_Start.cpp" />
     <ClCompile Include="Split.cpp" />
     <ClCompile Include="World_inport.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="IO.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene_Build.h" />
+    <ClInclude Include="Scene_city.h" />
+    <ClInclude Include="Scene_forest.h" />
     <ClInclude Include="Scene_Start.h" />
     <ClInclude Include="Split.h" />
     <ClInclude Include="Win_config.h" />

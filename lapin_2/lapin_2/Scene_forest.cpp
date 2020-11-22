@@ -370,6 +370,7 @@ void Scene_forest::Character_motion()
 	if (use_play_flag[0] == false && use_play_flag[1] == true && use_play_flag[2] == true) {
 		user_brocks_animation_flag_cache[0] = true;
 		animation_flag[3] = true;
+		PlaySoundMem(defo_SE, DX_PLAYTYPE_BACK);
 	}
 
 	//ユーザー定義ブロック(ノーマル)
@@ -381,5 +382,6 @@ void Scene_forest::Character_motion()
 	if (use_play_flag[0] == true && use_play_flag[1] == true && use_play_flag[2] == false) {
 		user_brocks_animation_flag_cache[1] = true;
 		animation_flag[1] = true;
+		PlaySoundMem(mush_SE, DX_PLAYTYPE_BACK);
 	}
 }

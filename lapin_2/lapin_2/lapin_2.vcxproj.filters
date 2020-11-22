@@ -28,11 +28,11 @@
     <Filter Include="ソース ファイル\Utility">
       <UniqueIdentifier>{e7083717-b950-4086-8e55-cc7a0a9926a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{3181cd8c-dd58-401c-ba40-a896aef53c53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Scene_Build.cpp">
       <Filter>ソース ファイル\Game scene</Filter>
     </ClCompile>
@@ -56,6 +56,15 @@
     </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_city.cpp">
+      <Filter>ソース ファイル\Game scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_forest.cpp">
+      <Filter>ソース ファイル\Game scene</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="Win_config.h">
       <Filter>ヘッダー ファイル\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_city.h">
+      <Filter>ヘッダー ファイル\Game scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_forest.h">
+      <Filter>ヘッダー ファイル\Game scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
