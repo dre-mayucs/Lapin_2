@@ -57,7 +57,9 @@ void Scene_city::City_start() {
 			//キャラクターアニメーション
 			Animation();
 
-			DrawFormatString(character_pos_x + 100, character_pos_y - 100, GetColor(0, 0, 0), "Goal!!!");
+			SetFontSize(20);
+			DrawFormatString(win_config.WIN_WIDTH - 120, 15, GetColor(25, 25, 25), "Q : Home");
+			DrawFormatString(character_pos_x + 100, character_pos_y - 100, GetColor(25, 25, 25), "Goal!!!");
 			delay_frame++;
 			if (delay_frame == 180) { break; }
 		}
@@ -79,41 +81,14 @@ void Scene_city::City_start() {
 
 			//キャラクターアニメーション
 			Animation();
+			SetFontSize(20);
+			DrawFormatString(win_config.WIN_WIDTH - 120, 15, GetColor(25, 25, 25), "Q : Home");
 		}
-
-		#pragma region DEBUG
-		/// <summary>
-		/// DEBUG_当たり判定可視化処理
-		/// </summary>
-		//for (auto i = 0; i < World_value; i++) {
-		//	DrawCircle((double)character_pos_x + 64, (double)character_pos_y + 32, 4, GetColor(0, 0, 0), true);
-		//	DrawCircle((double)character_pos_x + 64, (double)character_pos_y - 32, 4, GetColor(0, 0, 0), true);
-		//	/*DrawCircle((double)character_pos_x + 32, (double)character_pos_y + 64, 4, GetColor(0, 0, 0), true);*/
-		//	DrawCircle((double)World[i][0] + Worldadjust + 32, (double)World[i][1] + 32, 32, GetColor(0, 0, 0), true);
-
-		//	DrawCircle((double)User_brock_pos[0][0] + 32, (double)User_brock_pos[0][1] + 32, 32, GetColor(0, 0, 0), true);
-		//	DrawCircle((double)User_brock_pos[1][0] + 32, (double)User_brock_pos[1][1] + 32, 32, GetColor(0, 0, 0), true);
-		//	DrawCircle((double)User_brock_pos[2][0] + 32, (double)User_brock_pos[2][1] + 32, 32, GetColor(0, 0, 0), true);
-
-		//	DrawBox((double)character_pos_x + 30, (double)character_pos_y + 62, (double)character_pos_x + 34, (double)character_pos_y + 66, GetColor(0, 0, 0), true);
-		//	DrawBox((double)World[i][0] + Worldadjust, (double)World[i][1], (double)World[i][0] + Worldadjust + 64, (double)World[i][1] + 64, GetColor(0, 0, 0), true);
-		//}
-		//DrawFormatString(200, 50, GetColor(0, 0, 0), "%s\n%s\n%s", 
-		//	play_flag[0] ? "true" : "false",
-		//	play_flag[1] ? "true" : "false",
-		//	play_flag[2] ? "true" : "false"
-		//);
-
-		//DrawFormatString(250, 50, GetColor(0, 0, 0), "%s\n%s\n%s",
-		//	use_play_flag[0] ? "true" : "false",
-		//	use_play_flag[1] ? "true" : "false",
-		//	use_play_flag[2] ? "true" : "false"
-		//);
-
-#pragma endregion
 		
 		ScreenFlip();
 		WaitTimer(20);
+
+		if (keys[KEY_INPUT_Q] && !oldkeys[KEY_INPUT_Q]) { break; };
 		if (ProcessMessage() == -1) { break; }
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) { break; }
 	}
