@@ -10,7 +10,7 @@ World_inport::World_inport()
 
 void World_inport::Inport(int World[][2], std::string Stage_name, int *value)
 {
-	std::string File = "Resources\\scenes\\stage.scene";
+	std::string File = "Resources\\scenes\\" + Stage_name;
 	
 	int count = 0;
 	int count2 = 0;

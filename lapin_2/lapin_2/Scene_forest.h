@@ -11,6 +11,7 @@ public:
 	void Forest_start();
 
 private:
+	void collision_all();
 	void DrawBackground();
 	void DrawBrocks();
 	void Animation();
@@ -27,7 +28,7 @@ private:
 	int BG_position[2] = { 0, 800 };
 
 	//キャラクター
-	const int character_pos_x = 100;
+	int character_pos_x = 100;
 	int character_pos_y = 325;
 	int character[6];
 	int character_jump[8];
@@ -41,5 +42,7 @@ private:
 	int defoliation_brock[7];
 	int jump_brock[5];
 	int nomal_block[2];
+	int goal = 0;
+	int goal_pos[2] = {1500, 150};
 };
 

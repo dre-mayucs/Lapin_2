@@ -10,7 +10,7 @@ Scene_Build::Scene_Build()
 {
 	//ƒ[ƒ‹ƒh“Ç‚İ‚İ
 	World_inport inport;
-	inport.Inport(World, "scene.scene", &World_value);
+	inport.Inport(World, "stage.scene", &World_value);
 
 	//‘fŞ’è‹`
 	BG = LoadGraph("Resources\\Background\\background.png");
